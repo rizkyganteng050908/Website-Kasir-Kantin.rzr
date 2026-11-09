@@ -459,7 +459,7 @@
         // --- DATA INITIALIZATION ---
         const initialUsers = [
             { id_user: 1, nama_user: "Administrator", username: "admin", password: "admin123", role: "Admin" },
-            { id_user: 2, nama_user: "Kasir Utama", username: "kasir", password: "kasir", role: "Kasir" }
+            { id_user: 2, nama_user: "Kasir Utama", username: "kasir", password: "kasir123", role: "Kasir" }
         ];
 
         const initialMenus = [
@@ -998,6 +998,29 @@
             const username = document.getElementById('user-username').value.trim();
             const password = document.getElementById('user-password').value.trim();
             const role = document.getElementById('user-role').value;
+
+            // --- VALIDASI: Username & Password tidak boleh sama ---
+            if (username.toLowerCase() === password.toLowerCase()) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Validasi Gagal',
+                    text: 'Username dan Password tidak boleh sama!',
+                    confirmButtonColor: '#4f46e5'
+                });
+                return;
+            }
+
+            // --- VALIDASI: Cek duplikasi username ---
+            const isDuplicate = users.some(u => u.username.toLowerCase() === username.toLowerCase() && u.id_user != id);
+            if (isDuplicate) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Username Sudah Ada',
+                    text: 'Silakan gunakan username lain yang berbeda!',
+                    confirmButtonColor: '#4f46e5'
+                });
+                return;
+            }
 
             if (id) {
                 const u = users.find(user => user.id_user == id);
